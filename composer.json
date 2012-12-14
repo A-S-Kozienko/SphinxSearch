@@ -1,0 +1,40 @@
+{
+    "name": "ask/sphinx-search",
+    "type": "library",
+    "description": "Sphinxsearch wrapper",
+    "keywords": ["sphinx", "sphinxsearch", "search", "search engine"],
+    "homepage": "https://github.com/A-S-Kozienko/SphinxSearch",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexander Kozienko",
+            "email": "a.s.kozienko@gmail.com "
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "googlecode/sphinxsearch": "2.0.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "ASK\\SphinxSearch": "lib/"
+        }
+    },
+    "repositories": {
+        "googlecode/sphinxsearch":  {
+            "type": "package",
+            "package": {
+                "name": "googlecode/sphinxsearch",
+                "version": "2.0.0",
+                "source": {
+                    "url": "http://sphinxsearch.googlecode.com/svn/",
+                    "type": "svn",
+                    "reference": "branches/rel20"
+                },
+                "autoload": {
+                    "classmap": ["api/sphinxapi.php"]
+                }
+            }
+        }
+    }
+}

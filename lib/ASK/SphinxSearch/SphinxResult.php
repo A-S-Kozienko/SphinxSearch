@@ -49,7 +49,7 @@ class SphinxResult
      */
     public function getTotalFound()
     {
-        return isset($this->result['total_found']) ? (integer) $this->result['total'] : 0;
+        return isset($this->result['total_found']) ? (integer) $this->result['total_found'] : 0;
     }
 
     /**
@@ -69,7 +69,7 @@ class SphinxResult
     public function hasError()
     {
         $error = $this->getError();
-        return empty($error);
+        return false == empty($error);
     }
 
     /**
@@ -89,7 +89,7 @@ class SphinxResult
     public function hasWarning()
     {
         $warning = $this->getWarning();
-        return empty($warning);
+        return false == empty($warning);
     }
 
     /**

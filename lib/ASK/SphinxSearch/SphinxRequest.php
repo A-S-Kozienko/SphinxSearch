@@ -69,6 +69,11 @@ class SphinxRequest
     private $groupDistinct = '';
 
     /**
+     * @var array
+     */
+    private $sortMode;
+
+    /**
      * @param SphinxManager $manager
      * @param array $indexes
      */
@@ -362,5 +367,29 @@ class SphinxRequest
     public function getGroupDistinct()
     {
         return $this->groupDistinct;
+    }
+
+    /**
+     * @param int $mode
+     * @param string $sortBy
+     *
+     * @return SphinxRequest
+     */
+    public function setSortMode($mode, $sortBy = "")
+    {
+        $this->sortMode = array(
+            'mode'      => $mode,
+            'sortBy'    => $sortBy,
+        );
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSortMode()
+    {
+        return $this->sortMode;
     }
 }

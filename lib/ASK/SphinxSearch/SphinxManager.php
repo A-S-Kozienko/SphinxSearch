@@ -150,6 +150,10 @@ class SphinxManager
             $this->api->SetGroupBy($groupBy['attribute'], $groupBy['func'], $groupBy['groupsort']);
         }
 
+        if ($sortMode = $request->getSortMode()) {
+            $this->api->SetSortMode($sortMode['mode'], $sortMode['sortBy']);
+        }
+
         $this->api->SetGroupDistinct($request->getGroupDistinct());
 
         $this->api->AddQuery(

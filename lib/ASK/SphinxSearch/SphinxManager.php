@@ -157,7 +157,7 @@ class SphinxManager
         $this->api->SetGroupDistinct($request->getGroupDistinct());
 
         $this->api->AddQuery(
-            $this->parametrizeQuery($request->getQuery(), $request->getQueryParameters()),
+            $this->parametrizeQuery(trim(implode(' ', $request->getQueries())), $request->getQueryParameters()),
             implode(' ', $this->resolveIndexes($request->getIndexes())),
             $request->getComment()
         );
@@ -180,7 +180,7 @@ class SphinxManager
     }
 
     /**
-     * @param $query
+     * @param string $query
      * @param array $parameters
      *
      * @return string

@@ -133,11 +133,11 @@ class SphinxRequest
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getQuery()
+    public function getQueries()
     {
-        return trim(implode(' ', $this->queries));
+        return $this->queries;
     }
 
     /**

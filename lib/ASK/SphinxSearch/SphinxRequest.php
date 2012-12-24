@@ -26,7 +26,7 @@ class SphinxRequest
     /**
      * @var int
      */
-    private $maxResults = 10;
+    private $maxResults = 1000;
 
     /**
      * @var int
@@ -281,7 +281,7 @@ class SphinxRequest
             'attribute' => $attribute,
             'min'       => $min,
             'max'       => $max,
-            'exclude'   => $exclude,
+            'exclude'   => (boolean) $exclude,
         );
 
         return $this;
@@ -297,8 +297,8 @@ class SphinxRequest
 
     /**
      * @param string $attribute
-     * @param numeric $min
-     * @param numeric $max
+     * @param float $min
+     * @param float $max
      * @param bool $exclude
      *
      * @return SphinxRequest
@@ -307,9 +307,9 @@ class SphinxRequest
     {
         $this->floatRangeFilters[] = array(
             'attribute' => $attribute,
-            'min'       => $min,
-            'max'       => $max,
-            'exclude'   => $exclude,
+            'min'       => (float) $min,
+            'max'       => (float) $max,
+            'exclude'   => (boolean) $exclude,
         );
 
         return $this;
@@ -356,7 +356,7 @@ class SphinxRequest
      */
     public function setGroupDistinct($attribute)
     {
-        $this->groupDistinct = $attribute;
+        $this->groupDistinct = (string) $attribute;
 
         return $this;
     }

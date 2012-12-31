@@ -30,7 +30,6 @@ class SphinxManager
 
     /**
      * @param array $indexes
-     *
      * @return SphinxRequest
      */
     public function createRequest(array $indexes)
@@ -40,7 +39,6 @@ class SphinxManager
 
     /**
      * @param SphinxRequest $request
-     *
      * @return SphinxResult
      */
     public function executeSingleRequest(SphinxRequest $request)
@@ -51,7 +49,6 @@ class SphinxManager
 
     /**
      * @param SphinxRequest[] $requests
-     *
      * @return SphinxResult[]
      */
     public function executeMultiRequests(array $requests)
@@ -65,9 +62,7 @@ class SphinxManager
 
     /**
      * @param string $alias
-     *
      * @return string
-     *
      * @throws \OutOfBoundsException
      */
     public function getIndexByAlias($alias)
@@ -81,7 +76,6 @@ class SphinxManager
 
     /**
      * @param $alias
-     *
      * @return bool
      */
     public function hasAlias($alias)
@@ -131,7 +125,9 @@ class SphinxManager
         $this->api->ResetGroupBy();
         $this->api->ResetOverrides();
 
-        $this->api->SetLimits($request->getFirstResult(), $request->getMaxResults());
+        $limits = $request->getLimits();
+        $this->api->SetLimits($limits['offset'], $limits['limit'], $limits['maxMatches'], $limits['cutOff']);
+
         $this->api->SetMatchMode($request->getMatchMode());
 
         foreach ($request->getFilters() as $filter) {
@@ -165,7 +161,6 @@ class SphinxManager
 
     /**
      * @param string[] $indexes
-     *
      * @return string[]
      */
     public function resolveIndexes(array $indexes)
@@ -182,15 +177,11 @@ class SphinxManager
     /**
      * @param string $query
      * @param array $parameters
-     *
      * @return string
-     *
-     * @throws \LengthException
      */
     protected function parametrizeQuery($query, array $parameters)
     {
         if (empty($query)) {
-            //throw new \LengthException('Empty query string');
             return '';
         }
 

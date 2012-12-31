@@ -12,11 +12,25 @@ class SphinxAdapter implements AdapterInterface
     protected $request;
 
     /**
-     * @param \ASK\SphinxSearch\SphinxRequest $request
+     * @var int
      */
-    public function __construct(SphinxRequest $request)
+    protected $maxMatches;
+
+    /**
+     * @var int
+     */
+    protected $cutOff;
+
+    /**
+     * @param \ASK\SphinxSearch\SphinxRequest $request
+     * @param int $maxMatches
+     * @param int $cutOff
+     */
+    public function __construct(SphinxRequest $request, $maxMatches = 0, $cutOff = 0)
     {
-        $this->request = $request;
+        $this->request      = $request;
+        $this->maxMatches   = $maxMatches;
+        $this->cutOff       = $cutOff;
     }
 
     /**
@@ -24,9 +38,7 @@ class SphinxAdapter implements AdapterInterface
      */
     function getSlice($offset, $length)
     {
-        $this->request->setFirstResult($offset);
-        $this->request->setMaxResults($length);
-
+        $this->request->setLimits($offset, $length, $this->maxMatches, $this->cutOff);
         return $this->request->execute();
     }
 

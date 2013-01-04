@@ -1,6 +1,9 @@
 <?php
 namespace ASK\SphinxSearch;
 
+use ASK\SphinxSearch\Exception\SphinxApiErrorException;
+use ASK\SphinxSearch\Exception\SphinxApiWarningException;
+
 class SphinxManager
 {
     /**
@@ -38,6 +41,15 @@ class SphinxManager
     }
 
     /**
+     * @param array $indexes
+     * @return SphinxUpdateAttributesRequest
+     */
+    public function createUpdateAttributesRequest(array $indexes)
+    {
+        return new SphinxUpdateAttributesRequest($this, $indexes);
+    }
+
+    /**
      * @param SphinxRequest $request
      * @return SphinxResult
      */
@@ -58,6 +70,42 @@ class SphinxManager
         }
 
         return $this->runQueries();
+    }
+
+    /**
+     * @param SphinxUpdateAttributeRequest[]|SphinxUpdateAttributeRequest $requests
+     * @param bool $flush
+     * @throws Exception\SphinxApiErrorException
+     * @throws \InvalidArgumentException
+     */
+    public function executeUpdateAttributeRequests($requests, $flush = false)
+    {
+        if (false == is_array($requests)) {
+            $requests = array($requests);
+        }
+
+        foreach ($requests as $request) {
+            if (false == ($request instanceof SphinxUpdateAttributeRequest)) {
+                throw new \InvalidArgumentException('Type of "SphinxUpdateAttributeRequest" was expected.');
+            }
+
+            $this->api->UpdateAttributes(
+                $this->resolveIndexes($request->getIndexes()),
+                array($request->getAttribute()),
+                $request->getValues(),
+                $request->isMva()
+            );
+
+            $this->throwExceptionOnApiError();
+            $this->throwExceptionOnApiWarning();
+        }
+
+        if ($flush) {
+            $this->api->FlushAttributes();
+
+            $this->throwExceptionOnApiError();
+            $this->throwExceptionOnApiWarning();
+        }
     }
 
     /**
@@ -83,17 +131,50 @@ class SphinxManager
         return isset($this->aliasToIndexMap[$alias]);
     }
 
+    public function getStatus()
+    {
+        $status = $this->api->Status();
+
+        $this->throwExceptionOnApiError();
+        $this->throwExceptionOnApiWarning();
+
+        return new SphinxStatus($status);
+    }
+
+    /**
+     * @throws Exception\SphinxApiErrorException
+     */
+    protected function throwExceptionOnApiError()
+    {
+        $errorMessage = $this->api->GetLastError();
+        if (false == empty($errorMessage)) {
+            throw new SphinxApiErrorException($errorMessage);
+        }
+    }
+
+    /**
+     * @throws Exception\SphinxApiWarningException
+     */
+    protected function throwExceptionOnApiWarning()
+    {
+        $warningMessage = $this->api->GetLastWarning();
+        if (false == empty($warningMessage)) {
+            throw new SphinxApiWarningException($warningMessage);
+        }
+    }
+
     /**
      * @return SphinxResult[]
+     * @throws Exception\SphinxApiWarningException
+     * @throws Exception\SphinxApiErrorException
      */
     protected  function runQueries()
     {
         $results = $this->api->RunQueries();
         $this->api->_reqs = array(); // just in case it failed too early
 
-        if (false == is_array($results)) {
-            return array($this->createOnApiErrorResult());
-        }
+        $this->throwExceptionOnApiError();
+        $this->throwExceptionOnApiWarning();
 
         $sphinxResults = array();
         foreach ($results as $result) {
@@ -101,19 +182,6 @@ class SphinxManager
         }
 
         return $sphinxResults;
-    }
-
-    /**
-     * @return SphinxResult
-     */
-    protected function createOnApiErrorResult()
-    {
-        $result = array(
-            'error'     => $this->api->GetLastError(),
-            'warning'   => $this->api->GetLastWarning(),
-        );
-
-        return new SphinxResult($result);
     }
 
     /**

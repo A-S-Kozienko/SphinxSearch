@@ -2,12 +2,12 @@
 namespace ASK\SphinxSearch\Pagerfanta\Adapter;
 
 use Pagerfanta\Adapter\AdapterInterface;
-use ASK\SphinxSearch\SphinxRequest;
+use ASK\SphinxSearch\SphinxQuery;
 
 class SphinxAdapter implements AdapterInterface
 {
     /**
-     * @var \ASK\SphinxSearch\SphinxRequest
+     * @var \ASK\SphinxSearch\SphinxQuery
      */
     protected $request;
 
@@ -22,11 +22,11 @@ class SphinxAdapter implements AdapterInterface
     protected $cutOff;
 
     /**
-     * @param \ASK\SphinxSearch\SphinxRequest $request
+     * @param \ASK\SphinxSearch\SphinxQuery $request
      * @param int $maxMatches
      * @param int $cutOff
      */
-    public function __construct(SphinxRequest $request, $maxMatches = 0, $cutOff = 0)
+    public function __construct(SphinxQuery $request, $maxMatches = 0, $cutOff = 0)
     {
         $this->request      = $request;
         $this->maxMatches   = $maxMatches;

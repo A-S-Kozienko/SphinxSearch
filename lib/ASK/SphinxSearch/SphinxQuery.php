@@ -1,7 +1,7 @@
 <?php
 namespace ASK\SphinxSearch;
 
-class SphinxRequest
+class SphinxQuery
 {
     /**
      * @var SphinxManager
@@ -93,7 +93,7 @@ class SphinxRequest
 
     /**
      * @param string $comment
-     * @return SphinxRequest
+     * @return SphinxQuery
      */
     public function setComment($comment)
     {
@@ -120,7 +120,7 @@ class SphinxRequest
 
     /**
      * @param string $query
-     * @return SphinxRequest
+     * @return SphinxQuery
      * @throws \InvalidArgumentException
      */
     public function addQuery($query)
@@ -145,7 +145,7 @@ class SphinxRequest
     /**
      * @param string $key
      * @param mixed $value
-     * @return SphinxRequest
+     * @return SphinxQuery
      */
     public function setQueryParameter($key, $value)
     {
@@ -156,7 +156,7 @@ class SphinxRequest
 
     /**
      * @param array $parameters
-     * @return SphinxRequest
+     * @return SphinxQuery
      */
     public function setQueryParameters(array $parameters)
     {
@@ -181,7 +181,7 @@ class SphinxRequest
      * @param $limit
      * @param int $maxMatches
      * @param int $cutOff
-     * @return SphinxRequest
+     * @return SphinxQuery
      */
     public function setLimits($offset, $limit, $maxMatches = 0, $cutOff = 0)
     {
@@ -205,7 +205,7 @@ class SphinxRequest
 
     /**
      * @param int $matchMode
-     * @return SphinxRequest
+     * @return SphinxQuery
      */
     public function setMatchMode($matchMode)
     {
@@ -226,7 +226,7 @@ class SphinxRequest
      * @param string $attribute
      * @param int|array $values
      * @param bool $exclude
-     * @return SphinxRequest
+     * @return SphinxQuery
      */
     public function addFilter($attribute, $values, $exclude=false)
     {
@@ -252,7 +252,7 @@ class SphinxRequest
      * @param numeric $min
      * @param numeric $max
      * @param bool $exclude
-     * @return SphinxRequest
+     * @return SphinxQuery
      */
     public function addFilterRange($attribute, $min, $max, $exclude = false)
     {
@@ -279,7 +279,7 @@ class SphinxRequest
      * @param float $min
      * @param float $max
      * @param bool $exclude
-     * @return SphinxRequest
+     * @return SphinxQuery
      */
     public function addFilterFloatRange($attribute, $min, $max, $exclude = false)
     {
@@ -305,7 +305,7 @@ class SphinxRequest
      * @param string $attribute
      * @param int $func
      * @param string $groupsort
-     * @return SphinxRequest
+     * @return SphinxQuery
      */
     public function setGroupBy($attribute, $func, $groupsort="@group desc")
     {
@@ -328,7 +328,7 @@ class SphinxRequest
 
     /**
      * @param string $attribute
-     * @return SphinxRequest
+     * @return SphinxQuery
      */
     public function setGroupDistinct($attribute)
     {
@@ -348,7 +348,7 @@ class SphinxRequest
     /**
      * @param int $mode
      * @param string $sortBy
-     * @return SphinxRequest
+     * @return SphinxQuery
      */
     public function setSortMode($mode, $sortBy = "")
     {

@@ -33,11 +33,11 @@ class SphinxManager
 
     /**
      * @param array $indexes
-     * @return SphinxRequest
+     * @return SphinxQuery
      */
     public function createRequest(array $indexes)
     {
-        return new SphinxRequest($this, $indexes);
+        return new SphinxQuery($this, $indexes);
     }
 
     /**
@@ -50,17 +50,17 @@ class SphinxManager
     }
 
     /**
-     * @param SphinxRequest $request
+     * @param SphinxQuery $request
      * @return SphinxResult
      */
-    public function executeSingleRequest(SphinxRequest $request)
+    public function executeSingleRequest(SphinxQuery $request)
     {
         $this->addRequest($request);
         return $this->runQueries()[0];
     }
 
     /**
-     * @param SphinxRequest[] $requests
+     * @param SphinxQuery[] $requests
      * @return SphinxResult[]
      */
     public function executeMultiRequests(array $requests)
@@ -185,9 +185,9 @@ class SphinxManager
     }
 
     /**
-     * @param SphinxRequest $request
+     * @param SphinxQuery $request
      */
-    protected function addRequest(SphinxRequest $request)
+    protected function addRequest(SphinxQuery $request)
     {
         $this->api->ResetFilters();
         $this->api->ResetGroupBy();

@@ -9,7 +9,7 @@ class SphinxAdapter implements AdapterInterface
     /**
      * @var \ASK\SphinxSearch\SphinxQuery
      */
-    protected $request;
+    protected $query;
 
     /**
      * @var int
@@ -22,13 +22,13 @@ class SphinxAdapter implements AdapterInterface
     protected $cutOff;
 
     /**
-     * @param \ASK\SphinxSearch\SphinxQuery $request
+     * @param \ASK\SphinxSearch\SphinxQuery $query
      * @param int $maxMatches
      * @param int $cutOff
      */
-    public function __construct(SphinxQuery $request, $maxMatches = 0, $cutOff = 0)
+    public function __construct(SphinxQuery $query, $maxMatches = 0, $cutOff = 0)
     {
-        $this->request      = $request;
+        $this->query        = $query;
         $this->maxMatches   = $maxMatches;
         $this->cutOff       = $cutOff;
     }
@@ -38,8 +38,8 @@ class SphinxAdapter implements AdapterInterface
      */
     function getSlice($offset, $length)
     {
-        $this->request->setLimits($offset, $length, $this->maxMatches, $this->cutOff);
-        return $this->request->execute();
+        $this->query->setLimits($offset, $length, $this->maxMatches, $this->cutOff);
+        return $this->query->execute();
     }
 
     /**
@@ -47,6 +47,7 @@ class SphinxAdapter implements AdapterInterface
      */
     function getNbResults()
     {
-        return $this->request->execute()->getTotalFound();
+        $this->query->setLimits(0, 1, $this->maxMatches, $this->cutOff);
+        return $this->query->execute()->getTotalFound();
     }
 }

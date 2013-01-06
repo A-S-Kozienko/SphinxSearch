@@ -65,7 +65,7 @@ class SphinxQLFormatter
 
     public function formatMatch(SphinxQuery $query)
     {
-        return 'MATCH(\'' . implode(' ', $query->getMatches()) . '\')';
+        return $query->getMatches() ? 'MATCH(\'' . implode(' ', $query->getMatches()) . '\')' : '';
     }
 
     public function formatOrderBy(SphinxQuery $query)

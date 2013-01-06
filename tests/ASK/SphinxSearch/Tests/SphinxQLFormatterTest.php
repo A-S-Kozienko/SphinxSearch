@@ -195,6 +195,18 @@ class SphinxQLFormatterTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldReturnEmptyStringWhenMatchesNotSet()
+    {
+        $manager = new SphinxManager(new \SphinxClient());
+        $query = new SphinxQuery($manager, array('index1', 'index2'));
+
+        $formatter = new SphinxQLFormatter();
+        $this->assertEquals('', $formatter->formatMatch($query));
+    }
+
+    /**
+     * @test
+     */
     public function shouldFormatOrderBy()
     {
         $manager = new SphinxManager(new \SphinxClient());

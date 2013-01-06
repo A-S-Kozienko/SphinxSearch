@@ -276,11 +276,75 @@ class SphinxStatus
     }
 
     /**
+     * @return int
+     */
+    public function getAgentConnect()
+    {
+        return (int) $this->agentConnect;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAgentRetry()
+    {
+        return (int) $this->agentRetry;
+    }
+
+    /**
+     * @return int
+     */
+    public function getQueries()
+    {
+        return (int) $this->queries;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDistQueries()
+    {
+        return (int) $this->distQueries;
+    }
+
+    /**
+     * @return float
+     */
+    public function getQueryWall()
+    {
+        return (float) $this->queryWall;
+    }
+
+    /**
      * @return bool|float
      */
     public function getQueryCpu()
     {
         return (false === $this->queryCpu) ? false : (float) $this->queryCpu;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDistWall()
+    {
+        return (float) $this->distWall;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDistLocal()
+    {
+        return (float) $this->distLocal;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDistWait()
+    {
+        return (float) $this->distWait;
     }
 
     /**
@@ -308,11 +372,43 @@ class SphinxStatus
     }
 
     /**
+     * @return float
+     */
+    public function getAverageQueryWall()
+    {
+        return (float) $this->averageQueryWall;
+    }
+
+    /**
      * @return bool|float
      */
     public function getAverageQueryCpu()
     {
         return (false === $this->averageQueryCpu) ? false : (float) $this->averageQueryCpu;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAverageDistWall()
+    {
+        return (float) $this->averageDistWall;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAverageDistLocal()
+    {
+        return (float) $this->averageDistLocal;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAverageDistWait()
+    {
+        return (float) $this->averageDistWait;
     }
 
     /**

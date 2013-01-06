@@ -138,6 +138,71 @@ class SphinxStatusTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldReturnAgentConnect()
+    {
+        $status = new SphinxStatus(array(
+            array('agent_connect', '5')
+        ));
+
+        $this->assertInternalType('int', $status->getAgentConnect());
+        $this->assertEquals(5, $status->getAgentConnect());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnAgentRetry()
+    {
+        $status = new SphinxStatus(array(
+            array('agent_retry', '5')
+        ));
+
+        $this->assertInternalType('int', $status->getAgentRetry());
+        $this->assertEquals(5, $status->getAgentRetry());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnQueries()
+    {
+        $status = new SphinxStatus(array(
+            array('queries', '5')
+        ));
+
+        $this->assertInternalType('int', $status->getQueries());
+        $this->assertEquals(5, $status->getQueries());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnDistQueries()
+    {
+        $status = new SphinxStatus(array(
+            array('dist_queries', '5')
+        ));
+
+        $this->assertInternalType('int', $status->getDistQueries());
+        $this->assertEquals(5, $status->getDistQueries());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnQueryWall()
+    {
+        $status = new SphinxStatus(array(
+            array('query_wall', '5')
+        ));
+
+        $this->assertInternalType('float', $status->getQueryWall());
+        $this->assertEquals(5, $status->getQueryWall());
+    }
+
+    /**
+     * @test
+     */
     public function shouldReturnQueryCpu()
     {
         $status = new SphinxStatus(array(
@@ -146,6 +211,45 @@ class SphinxStatusTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInternalType('float', $status->getQueryCpu());
         $this->assertEquals(5, $status->getQueryCpu());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnDistWall()
+    {
+        $status = new SphinxStatus(array(
+            array('dist_wall', '5')
+        ));
+
+        $this->assertInternalType('float', $status->getDistWall());
+        $this->assertEquals(5, $status->getDistWall());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnDistLocal()
+    {
+        $status = new SphinxStatus(array(
+            array('dist_local', '5')
+        ));
+
+        $this->assertInternalType('float', $status->getDistLocal());
+        $this->assertEquals(5, $status->getDistLocal());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnDistWait()
+    {
+        $status = new SphinxStatus(array(
+            array('dist_wait', '5')
+        ));
+
+        $this->assertInternalType('float', $status->getDistWait());
+        $this->assertEquals(5, $status->getDistWait());
     }
 
     /**
@@ -226,6 +330,19 @@ class SphinxStatusTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldReturnAverageQueryWall()
+    {
+        $status = new SphinxStatus(array(
+            array('avg_query_wall', '5')
+        ));
+
+        $this->assertInternalType('float', $status->getAverageQueryWall());
+        $this->assertEquals(5, $status->getAverageQueryWall());
+    }
+
+    /**
+     * @test
+     */
     public function shouldReturnFalseIfQueryReadTimeNotNumeric()
     {
         $status = new SphinxStatus(array(
@@ -258,6 +375,45 @@ class SphinxStatusTest extends \PHPUnit_Framework_TestCase
         ));
 
         $this->assertFalse($status->getAverageQueryCpu());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnAverageDistWall()
+    {
+        $status = new SphinxStatus(array(
+            array('avg_dist_wall', '5')
+        ));
+
+        $this->assertInternalType('float', $status->getAverageDistWall());
+        $this->assertEquals(5, $status->getAverageDistWall());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnAverageDistLocal()
+    {
+        $status = new SphinxStatus(array(
+            array('avg_dist_local', '5')
+        ));
+
+        $this->assertInternalType('float', $status->getAverageDistLocal());
+        $this->assertEquals(5, $status->getAverageDistLocal());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnAverageDistWait()
+    {
+        $status = new SphinxStatus(array(
+            array('avg_dist_wait', '5')
+        ));
+
+        $this->assertInternalType('float', $status->getAverageDistWait());
+        $this->assertEquals(5, $status->getAverageDistWait());
     }
 
     /**

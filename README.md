@@ -46,17 +46,17 @@ $ php composer.phar update ask/sphinx-search
 $client = new \SphinxClient();
 $manager = new SphinxManager($client);
 
-$request = $manager->createRequest(array(
+$query = $manager->createQuery(array(
     'index_main',
     'index_delta',
 ));
 
-$request
-    ->addQuery('hello :placeholder')
-    ->setQueryParameter('placeholder', 'word')
+$query
+    ->addMatch('hello :placeholder')
+    ->setMatchParameter('placeholder', 'word')
 ;
 
-$result = $request->execute();
+$result = $query->execute();
 ```
 
 ## Aliases
@@ -76,7 +76,7 @@ $env_prod = array(
 
 $manager = new SphinxManager($client, $env_dev); // or $env_prod
 
-$request = $manager->createRequest(array(
+$query = $manager->createQuery(array(
     'MainAlias',
     'index_delta',
 ));
@@ -90,12 +90,12 @@ For pagination you need additional lib [Pagerfanta](https://github.com/whiteocto
 $client = new \SphinxClient();
 $manager = new SphinxManager($client);
 
-$request = $manager->createRequest(array(
+$query = $manager->createQuery(array(
     'index_main',
     'index_delta',
 ));
 
-$adapter = new SphinxAdapter($searchRequest);
+$adapter = new SphinxAdapter($query);
 $pager = new \Pagerfanta\Pagerfanta($adapter);
 $pager->setMaxPerPage(15);
 $pager->setCurrentPage(1);

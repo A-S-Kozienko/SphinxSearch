@@ -11,12 +11,12 @@ class SphinxQuery
     /**
      * @var array
      */
-    private $queryParameters = array();
+    private $matchParameters = array();
 
     /**
      * @var array
      */
-    private $queries = array();
+    private $matches = array();
 
     /**
      * @var array
@@ -88,7 +88,7 @@ class SphinxQuery
      */
     public function execute()
     {
-        return $this->manager->executeSingleRequest($this);
+        return $this->manager->executeQuery($this);
     }
 
     /**
@@ -123,13 +123,13 @@ class SphinxQuery
      * @return SphinxQuery
      * @throws \InvalidArgumentException
      */
-    public function addQuery($query)
+    public function addMatch($query)
     {
         if (false == is_string($query)) {
             throw new \InvalidArgumentException('query should be type of string');
         }
 
-        $this->queries[] = $query;
+        $this->matches[] = $query;
 
         return $this;
     }
@@ -137,9 +137,9 @@ class SphinxQuery
     /**
      * @return array
      */
-    public function getQueries()
+    public function getMatches()
     {
-        return $this->queries;
+        return $this->matches;
     }
 
     /**
@@ -147,9 +147,9 @@ class SphinxQuery
      * @param mixed $value
      * @return SphinxQuery
      */
-    public function setQueryParameter($key, $value)
+    public function setMatchParameter($key, $value)
     {
-        $this->queryParameters[$key] = $value;
+        $this->matchParameters[$key] = $value;
 
         return $this;
     }
@@ -158,9 +158,9 @@ class SphinxQuery
      * @param array $parameters
      * @return SphinxQuery
      */
-    public function setQueryParameters(array $parameters)
+    public function setMatchParameters(array $parameters)
     {
-        $this->queryParameters = $parameters;
+        $this->matchParameters = $parameters;
 
         return $this;
     }
@@ -168,9 +168,9 @@ class SphinxQuery
     /**
      * @return array
      */
-    public function getQueryParameters()
+    public function getMatchParameters()
     {
-        return $this->queryParameters;
+        return $this->matchParameters;
     }
 
     /**
@@ -254,7 +254,7 @@ class SphinxQuery
      * @param bool $exclude
      * @return SphinxQuery
      */
-    public function addFilterRange($attribute, $min, $max, $exclude = false)
+    public function addRangeFilter($attribute, $min, $max, $exclude = false)
     {
         $this->rangeFilters[] = array(
             'attribute' => $attribute,
@@ -281,7 +281,7 @@ class SphinxQuery
      * @param bool $exclude
      * @return SphinxQuery
      */
-    public function addFilterFloatRange($attribute, $min, $max, $exclude = false)
+    public function addFloatRangeFilter($attribute, $min, $max, $exclude = false)
     {
         $this->floatRangeFilters[] = array(
             'attribute' => $attribute,

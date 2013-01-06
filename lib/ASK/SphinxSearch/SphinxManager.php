@@ -3,6 +3,7 @@ namespace ASK\SphinxSearch;
 
 use ASK\SphinxSearch\Exception\SphinxApiErrorException;
 use ASK\SphinxSearch\Exception\SphinxApiWarningException;
+use ASK\SphinxSearch\Logging\SphinxLogger;
 
 class SphinxManager
 {
@@ -10,6 +11,11 @@ class SphinxManager
      * @var \SphinxClient
      */
     protected $api;
+
+    /**
+     * @var \ASK\SphinxSearch\Logging\SphinxLogger
+     */
+    protected $logger;
 
     /**
      * array(
@@ -35,7 +41,7 @@ class SphinxManager
      * @param array $indexes
      * @return SphinxQuery
      */
-    public function createRequest(array $indexes)
+    public function createQuery(array $indexes)
     {
         return new SphinxQuery($this, $indexes);
     }
@@ -50,26 +56,47 @@ class SphinxManager
     }
 
     /**
-     * @param SphinxQuery $request
+     * @param SphinxQuery $query
      * @return SphinxResult
      */
-    public function executeSingleRequest(SphinxQuery $request)
+    public function executeQuery(SphinxQuery $query)
     {
-        $this->addRequest($request);
-        return $this->runQueries()[0];
+        if ($this->logger) {
+            $this->logger->startQuery($query);
+        }
+
+        $this->addRequest($query);
+        $result = $this->runQueries()[0];
+
+        if ($this->logger) {
+            $this->logger->stopQuery($result);
+        }
+
+        return $result;
     }
 
     /**
-     * @param SphinxQuery[] $requests
-     * @return SphinxResult[]
+     * @param Logging\SphinxLogger $logger
      */
-    public function executeMultiRequests(array $requests)
+    public function setLogger(SphinxLogger $logger)
     {
-        foreach ($requests as $request) {
-            $this->addRequest($request);
-        }
+        $this->logger = $logger;
+    }
 
-        return $this->runQueries();
+    /**
+     * @return string
+     */
+    public function getApiError()
+    {
+        return $this->api->GetLastError();
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiWarning()
+    {
+        return $this->api->GetLastWarning();
     }
 
     /**
@@ -185,45 +212,45 @@ class SphinxManager
     }
 
     /**
-     * @param SphinxQuery $request
+     * @param SphinxQuery $query
      */
-    protected function addRequest(SphinxQuery $request)
+    protected function addRequest(SphinxQuery $query)
     {
         $this->api->ResetFilters();
         $this->api->ResetGroupBy();
         $this->api->ResetOverrides();
 
-        $limits = $request->getLimits();
+        $limits = $query->getLimits();
         $this->api->SetLimits($limits['offset'], $limits['limit'], $limits['maxMatches'], $limits['cutOff']);
 
-        $this->api->SetMatchMode($request->getMatchMode());
+        $this->api->SetMatchMode($query->getMatchMode());
 
-        foreach ($request->getFilters() as $filter) {
+        foreach ($query->getFilters() as $filter) {
             $this->api->SetFilter($filter['attribute'], $filter['values'], $filter['exclude']);
         }
 
-        foreach ($request->getRangeFilters() as $filter) {
+        foreach ($query->getRangeFilters() as $filter) {
             $this->api->SetFilterRange($filter['attribute'], $filter['min'], $filter['max'], $filter['exclude']);
         }
 
-        foreach ($request->getFloatRangeFilters() as $filter) {
+        foreach ($query->getFloatRangeFilters() as $filter) {
             $this->api->SetFilterFloatRange($filter['attribute'], $filter['min'], $filter['max'], $filter['exclude']);
         }
 
-        if ($groupBy = $request->getGroupBy()) {
+        if ($groupBy = $query->getGroupBy()) {
             $this->api->SetGroupBy($groupBy['attribute'], $groupBy['func'], $groupBy['groupsort']);
         }
 
-        if ($sortMode = $request->getSortMode()) {
+        if ($sortMode = $query->getSortMode()) {
             $this->api->SetSortMode($sortMode['mode'], $sortMode['sortBy']);
         }
 
-        $this->api->SetGroupDistinct($request->getGroupDistinct());
+        $this->api->SetGroupDistinct($query->getGroupDistinct());
 
         $this->api->AddQuery(
-            $this->parametrizeQuery(trim(implode(' ', $request->getQueries())), $request->getQueryParameters()),
-            implode(' ', $this->resolveIndexes($request->getIndexes())),
-            $request->getComment()
+            $this->parametrizeQuery(trim(implode(' ', $query->getMatches())), $query->getMatchParameters()),
+            implode(' ', $this->resolveIndexes($query->getIndexes())),
+            $query->getComment()
         );
     }
 

@@ -247,6 +247,10 @@ class SphinxManager
 
         $this->api->SetGroupDistinct($query->getGroupDistinct());
 
+        if ($selects = $query->getSelects()) {
+            $this->api->SetSelect(trim(implode(', ', $selects)));
+        }
+
         $this->api->AddQuery(
             $this->parametrizeQuery(trim(implode(' ', $query->getMatches())), $query->getMatchParameters()),
             implode(' ', $this->resolveIndexes($query->getIndexes())),

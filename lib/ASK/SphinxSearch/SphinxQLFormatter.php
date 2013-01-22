@@ -7,9 +7,13 @@ class SphinxQLFormatter
 {
     public function format(SphinxQuery $query)
     {
-        $ql = array('SELECT * ');
+        $ql[] = $this->formatSelect($query);
         $ql[] = $this->formatFrom($query);
         $ql[] = $this->formatWhere($query);
+
+        if ($groupBy = $this->formatGroupBy($query)) {
+            $ql[] = $groupBy;
+        }
 
         if ($orderBy = $this->formatOrderBy($query)) {
             $ql[] = $orderBy;
@@ -92,7 +96,7 @@ class SphinxQLFormatter
         return implode(' AND ', $ql);
     }
 
-    protected function formatWhere(SphinxQuery $query)
+    public function formatWhere(SphinxQuery $query)
     {
         $ql = array();
 
@@ -112,6 +116,35 @@ class SphinxQLFormatter
             $ql[] = $filters;
         }
 
-        return $ql ? "WHERE " . implode(' AND ', $ql) : '';
+        return $ql ? 'WHERE ' . implode(' AND ', $ql) : '';
+    }
+
+    public function formatGroupBy(SphinxQuery $query)
+    {
+        if ($groupBy = $query->getGroupBy()) {
+            return 'GROUP BY ' . $groupBy['attribute'] . ' WITHIN GROUP ORDER BY ' . $groupBy['groupsort'];
+        }
+
+        return '';
+    }
+
+    public function formatGroupDistinct(SphinxQuery $query)
+    {
+        if ($groupDistinct = $query->getGroupDistinct()) {
+            return 'COUNT(DISTINCT ' . $groupDistinct . ') AS @distinct';
+        }
+
+        return '';
+    }
+
+    public function formatSelect(SphinxQuery $query)
+    {
+        $selects = $query->getSelects();
+
+        if ($query->getGroupBy() && $query->getGroupDistinct()) {
+            $selects[] = $this->formatGroupDistinct($query);
+        }
+
+        return 'SELECT ' . ($selects ? trim(implode(', ', $selects)) : '*');
     }
 }

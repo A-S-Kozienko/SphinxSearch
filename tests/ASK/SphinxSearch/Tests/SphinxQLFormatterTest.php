@@ -228,4 +228,71 @@ class SphinxQLFormatterTest extends \PHPUnit_Framework_TestCase
         $formatter = new SphinxQLFormatter();
         $this->assertEquals('', $formatter->formatOrderBy($query));
     }
+
+    /**
+     * @test
+     */
+    public function shouldFormatGroupBy()
+    {
+        $manager = new SphinxManager(new \SphinxClient());
+        $query = new SphinxQuery($manager, array('index1', 'index2'));
+        $query->setGroupBy('attribute', 1, '@weight ASC');
+
+        $formatter = new SphinxQLFormatter();
+        $this->assertEquals('GROUP BY attribute WITHIN GROUP ORDER BY @weight ASC', $formatter->formatGroupBy($query));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFormatGroupDistinct()
+    {
+        $manager = new SphinxManager(new \SphinxClient());
+        $query = new SphinxQuery($manager, array('index1', 'index2'));
+        $query->setGroupDistinct('attribute');
+
+        $formatter = new SphinxQLFormatter();
+        $this->assertEquals('COUNT(DISTINCT attribute) AS @distinct', $formatter->formatGroupDistinct($query));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFormatSelect()
+    {
+        $manager = new SphinxManager(new \SphinxClient());
+        $query = new SphinxQuery($manager, array('index1', 'index2'));
+        $query->addSelect('select1');
+        $query->addSelect('select2');
+
+        $formatter = new SphinxQLFormatter();
+        $this->assertEquals('SELECT select1, select2', $formatter->formatSelect($query));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFormatEmptySelect()
+    {
+        $manager = new SphinxManager(new \SphinxClient());
+        $query = new SphinxQuery($manager, array('index1', 'index2'));
+
+        $formatter = new SphinxQLFormatter();
+        $this->assertEquals('SELECT *', $formatter->formatSelect($query));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFormatSelectWithDistinct()
+    {
+        $manager = new SphinxManager(new \SphinxClient());
+        $query = new SphinxQuery($manager, array('index1', 'index2'));
+        $query->addSelect('select');
+        $query->setGroupBy('group_attribute', 1);
+        $query->setGroupDistinct('distinct_attribute');
+
+        $formatter = new SphinxQLFormatter();
+        $this->assertEquals('SELECT select, COUNT(DISTINCT distinct_attribute) AS @distinct', $formatter->formatSelect($query));
+    }
 }

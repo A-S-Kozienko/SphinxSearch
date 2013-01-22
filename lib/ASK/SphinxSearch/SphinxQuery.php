@@ -21,6 +21,11 @@ class SphinxQuery
     /**
      * @var array
      */
+    private $selects = array();
+
+    /**
+     * @var array
+     */
     private $indexes;
 
     /**
@@ -140,6 +145,30 @@ class SphinxQuery
     public function getMatches()
     {
         return $this->matches;
+    }
+
+    /**
+     * @param $clause
+     * @return $this
+     * @throws \InvalidArgumentException
+     */
+    public function addSelect($clause)
+    {
+        if (false == is_string($clause)) {
+            throw new \InvalidArgumentException('clause should be type of string');
+        }
+
+        $this->selects[] = $clause;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSelects()
+    {
+        return $this->selects;
     }
 
     /**

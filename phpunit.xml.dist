@@ -12,4 +12,9 @@
             <directory>./lib</directory>
         </whitelist>
     </filter>
+
+    <php>
+        <env name="SPHINX_HOST" value="localhost"/>
+        <env name="SPHINX_PORT" value="9306"/>
+    </php>
 </phpunit>

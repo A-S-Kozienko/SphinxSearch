@@ -14,7 +14,7 @@
     </filter>
 
     <php>
-        <env name="SPHINX_HOST" value="localhost"/>
-        <env name="SPHINX_PORT" value="9306"/>
+        <env name="SPHINX_HOST" value="127.0.0.1"/>
+        <env name="SPHINX_PORT" value="9333"/>
     </php>
 </phpunit>

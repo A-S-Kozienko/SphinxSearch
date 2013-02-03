@@ -1,6 +1,11 @@
 <?php
 namespace ASK\SphinxSearch\SphinxQL\Driver;
 
+use ASK\SphinxSearch\SphinxQL\Exception\SphinxErrorException;
+
+/**
+ * PDOConnection
+ */
 class PDOConnection implements ConnectionInterface
 {
     /**
@@ -10,7 +15,7 @@ class PDOConnection implements ConnectionInterface
 
     /**
      * @param string $host
-     * @param int $port
+     * @param int    $port
      */
     public function __construct($host = '127.0.0.1', $port = 9306)
     {
@@ -18,14 +23,13 @@ class PDOConnection implements ConnectionInterface
     }
 
     /**
-     * @param sting $statement
-     * @return array
-     * @throws Exception\DriverException
+     * {@inheritDoc}
      */
     public function query($statement)
     {
         if (false == $pdoStatement = $this->pdo->query($statement)) {
-            throw new Exception\DriverException($this->pdo->errorInfo()[2]);
+            $errorInfo = $this->pdo->errorInfo();
+            throw new SphinxErrorException($errorInfo[2], $errorInfo[1]);
         }
 
         return $pdoStatement->fetchAll(\PDO::FETCH_ASSOC);

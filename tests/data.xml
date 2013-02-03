@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sphinx:docset>
+
+    <sphinx:schema>
+        <sphinx:field name="text"/>
+        <sphinx:attr name="timestamp" type="timestamp"/>
+        <sphinx:attr name="int" type="int"/>
+    </sphinx:schema>
+
+    <sphinx:document id="1">
+        <text>text1</text>
+        <timestamp>1012325463</timestamp>
+        <int>2</int>
+    </sphinx:document>
+
+    <sphinx:document id="2">
+        <text>text2</text>
+        <timestamp>1012325467</timestamp>
+        <int>2</int>
+    </sphinx:document>
+
+</sphinx:docset>

@@ -13,7 +13,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function couldBeConstructed()
     {
-        new QueryBuilder();
+        new QueryBuilder($this->createSphinxSearchMock());
     }
 
     /**
@@ -23,7 +23,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldThrowExceptionIfSelectNotSet()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->getSphinxQL();
     }
 
@@ -34,7 +34,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldThrowExceptionIfFromNotSet()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr');
         $qb->getSphinxQL();
     }
@@ -44,7 +44,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldReturnSphinxQL()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr');
         $qb->from('index');
 
@@ -56,7 +56,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetWhere()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->where('condition');
@@ -69,7 +69,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetGroupBy()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->groupBy('group_by');
@@ -82,7 +82,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetSingleOrderBy()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->orderBy('column', 'DESC');
@@ -95,7 +95,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetMultipleOrderBy()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->orderBy('column', 'DESC')
@@ -109,7 +109,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetWithinGroupOrderBy()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->withinGroupOrderBy('column', 'DESC');
@@ -122,7 +122,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetLimitWithoutOffset()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->limit(10);
@@ -135,7 +135,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetLimitWithOffset()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->limit(10, 100);
@@ -148,7 +148,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetOptionRanker()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->setRanker(QueryBuilder::RANKER_BM25);
@@ -161,7 +161,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetOptionMaxMatches()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->setMaxMatches(100);
@@ -174,7 +174,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetOptionCutoff()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->setCutoff(100);
@@ -187,7 +187,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetOptionMaxQueryTime()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->setMaxQueryTime(100);
@@ -200,7 +200,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetOptionRetryCount()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->setRetryCount(100);
@@ -213,7 +213,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetOptionRetryDelay()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->setRetryDelay(100);
@@ -226,7 +226,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetOptionFieldWeights()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->setFieldWeights(array(
@@ -242,7 +242,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldAddOptionFieldWeight()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->addFieldWeight('field', 1)
@@ -256,7 +256,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetOptionIndexWeights()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->setIndexWeights(array(
@@ -272,7 +272,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldAddOptionIndexWeight()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->addIndexWeight('field', 1)
@@ -286,7 +286,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetOptionReverseScan()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->setReverseScan(true);
@@ -299,7 +299,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetOptionComment()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->setComment("comment'comment");
@@ -312,7 +312,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetMultiplyOptions()
     {
-        $qb = new QueryBuilder();
+        $qb = new QueryBuilder($this->createSphinxSearchMock());
         $qb->select('expr')
             ->from('index')
             ->setRetryCount(1)
@@ -323,5 +323,13 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
             ));
 
         $this->assertEquals("SELECT expr FROM index OPTION retry_count=1, retry_delay=2, field_weights=(field=3, field2=4)", $qb->getSphinxQL());
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|\ASK\SphinxSearch\SphinxQL\SphinxSearch
+     */
+    protected function createSphinxSearchMock()
+    {
+        return $this->getMock('ASK\\SphinxSearch\\SphinxQL\\SphinxSearch', array(), array(), '', false);
     }
 }

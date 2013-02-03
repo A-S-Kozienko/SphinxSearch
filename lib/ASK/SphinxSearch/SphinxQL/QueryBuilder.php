@@ -80,6 +80,19 @@ class QueryBuilder
     protected $comment;
 
     /**
+     * @var SphinxSearch
+     */
+    protected $sphinxSearch;
+
+    /**
+     * @param SphinxSearch $sphinxSearch
+     */
+    public function __construct(SphinxSearch $sphinxSearch)
+    {
+        $this->sphinxSearch = $sphinxSearch;
+    }
+
+    /**
      * @param string $expr
      *
      * @return $this

@@ -19,4 +19,10 @@
         <int>2</int>
     </sphinx:document>
 
+    <sphinx:document id="3">
+        <text>text1 text2 text3</text>
+        <timestamp>1012325467</timestamp>
+        <int>3</int>
+    </sphinx:document>
+
 </sphinx:docset>

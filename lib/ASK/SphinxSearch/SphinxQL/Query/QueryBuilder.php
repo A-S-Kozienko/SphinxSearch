@@ -1,5 +1,7 @@
 <?php
-namespace ASK\SphinxSearch\SphinxQL;
+namespace ASK\SphinxSearch\SphinxQL\Query;
+
+use ASK\SphinxSearch\SphinxQL\SphinxSearch;
 
 /**
  * QueryBuilder
@@ -80,12 +82,12 @@ class QueryBuilder
     protected $comment;
 
     /**
-     * @var SphinxSearch
+     * @var \ASK\SphinxSearch\SphinxQL\SphinxSearch
      */
     protected $sphinxSearch;
 
     /**
-     * @param SphinxSearch $sphinxSearch
+     * @param \ASK\SphinxSearch\SphinxQL\SphinxSearch $sphinxSearch
      */
     public function __construct(SphinxSearch $sphinxSearch)
     {

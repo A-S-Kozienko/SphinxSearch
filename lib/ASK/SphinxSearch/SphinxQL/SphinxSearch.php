@@ -4,6 +4,8 @@ namespace ASK\SphinxSearch\SphinxQL;
 use ASK\SphinxSearch\SphinxQL\Driver\ConnectionInterface;
 use ASK\SphinxSearch\SphinxQL\Logging\SphinxLogger;
 use ASK\SphinxSearch\SphinxQL\Exception\SphinxWarningException;
+use ASK\SphinxSearch\SphinxQL\Query\QueryBuilder;
+use ASK\SphinxSearch\SphinxQL\Query\Meta;
 
 /**
  * SphinxSearch
@@ -144,15 +146,18 @@ class SphinxSearch
     }
 
     /**
+     * @return \ASK\SphinxSearch\SphinxQL\Query\Meta
+     */
+    public function showMeta()
+    {
+        return new Meta($this->query('SHOW META'));
+    }
+
+    /**
      * @return array
      */
     protected function showWarnings()
     {
         return $this->connection->query('SHOW WARNINGS');
-    }
-
-    public function showMeta()
-    {
-        return $this->query('SHOW META');
     }
 }

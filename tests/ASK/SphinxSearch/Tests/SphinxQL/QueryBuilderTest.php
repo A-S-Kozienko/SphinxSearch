@@ -1,7 +1,7 @@
 <?php
 namespace ASK\SphinxSearch\Tests\SphinxQL;
 
-use ASK\SphinxSearch\SphinxQL\QueryBuilder;
+use ASK\SphinxSearch\SphinxQL\Query\QueryBuilder;
 
 /**
  * QueryBuilderTest

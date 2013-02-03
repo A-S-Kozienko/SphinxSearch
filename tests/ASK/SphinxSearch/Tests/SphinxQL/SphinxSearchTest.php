@@ -71,6 +71,22 @@ class SphinxSearchTest extends \PHPUnit_Framework_TestCase
         $connection = new PDOConnection($_ENV['SPHINX_HOST'], $_ENV['SPHINX_PORT']);
         $sphinxSearch = new SphinxSearch($connection);
 
+        $sphinxSearch->query("SELECT * FROM test WHERE MATCH('text1 text2')");
         $result = $sphinxSearch->showMeta();
+
+        $this->assertInstanceOf('ASK\SphinxSearch\SphinxQL\Query\Meta', $result);
+        $this->assertEquals(1, $result->getTotal());
+        $this->assertEquals(1, $result->getTotalFound());
+        $this->assertEquals(0, $result->getExecutionTime());
+
+        $keywords = $result->getKeywords();
+
+        $this->assertEquals('text1', $keywords[0]['keyword']);
+        $this->assertEquals(2, $keywords[0]['docs']);
+        $this->assertEquals(2, $keywords[0]['hits']);
+
+        $this->assertEquals('text2', $keywords[1]['keyword']);
+        $this->assertEquals(2, $keywords[1]['docs']);
+        $this->assertEquals(2, $keywords[1]['hits']);
     }
 }

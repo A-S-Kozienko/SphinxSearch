@@ -167,4 +167,28 @@ class SphinxSearch
 
         return null;
     }
+
+    /**
+     * @return void
+     */
+    public function startTransaction()
+    {
+        $this->query('START TRANSACTION');
+    }
+
+    /**
+     * @return void
+     */
+    public function commit()
+    {
+        $this->query('COMMIT');
+    }
+
+    /**
+     * @return void
+     */
+    public function rollback()
+    {
+        $this->query('ROLLBACK');
+    }
 }

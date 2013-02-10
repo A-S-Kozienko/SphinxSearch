@@ -1,7 +1,7 @@
 <?php
 namespace ASK\SphinxSearch\SphinxQL\Logging;
 
-use ASK\SphinxSearch\SphinxResult;
+use ASK\SphinxSearch\SphinxQL\Query\Meta;
 
 /**
  * SphinxLogger
@@ -36,12 +36,12 @@ class SphinxLogger
     }
 
     /**
-     * @param \ASK\SphinxSearch\SphinxResult $result
+     * @param \ASK\SphinxSearch\SphinxQL\Query\Meta $meta
      */
-    public function stopQuery(SphinxResult $result)
+    public function stopQuery(Meta $meta)
     {
         $this->queries[$this->queryIndex]['executionTime'] = microtime(true) - $this->queryStart;
-        $this->queries[$this->queryIndex]['result'] = clone $result;
+        $this->queries[$this->queryIndex]['meta'] = $meta;
     }
 
     /**

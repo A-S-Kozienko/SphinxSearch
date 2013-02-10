@@ -134,7 +134,7 @@ class SphinxSearch
         }
 
         if ($this->logger) {
-            $this->logger->stopQuery($result);
+            $this->logger->stopQuery($this->showMeta());
         }
 
         return $result;

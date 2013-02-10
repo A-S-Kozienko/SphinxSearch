@@ -130,7 +130,7 @@ class SphinxSearch
 
         $result = $this->connection->query($query);
         if ($warning = $this->showWarnings()) {
-            throw new SphinxWarningException($warning[0]['Message'], $warning[0]['Code']);
+            throw new SphinxWarningException($warning['message'], $warning['code']);
         }
 
         if ($this->logger) {
@@ -154,10 +154,17 @@ class SphinxSearch
     }
 
     /**
-     * @return array
+     * @return array|null
      */
-    protected function showWarnings()
+    public function showWarnings()
     {
-        return $this->connection->query('SHOW WARNINGS');
+        if ($warning = $this->connection->query('SHOW WARNINGS')) {
+            return array(
+                'message' => $warning[0]['Message'],
+                'code'    => $warning[0]['Code'],
+            );
+        }
+
+        return null;
     }
 }

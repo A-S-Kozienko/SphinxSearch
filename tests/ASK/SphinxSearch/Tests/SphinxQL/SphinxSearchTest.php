@@ -66,6 +66,35 @@ class SphinxSearchTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldReturnNullIfNoWarnings()
+    {
+        $connection = new PDOConnection($_ENV['SPHINX_HOST'], $_ENV['SPHINX_PORT']);
+        $sphinxSearch = new SphinxSearch($connection);
+
+        $this->assertNull($sphinxSearch->showWarnings());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnWarning()
+    {
+        $connection = new PDOConnection($_ENV['SPHINX_HOST'], $_ENV['SPHINX_PORT']);
+        $sphinxSearch = new SphinxSearch($connection);
+
+        $connection->query('SELECT * FROM test WHERE MATCH(\'"test doc"/3\')');
+
+        $expected = array(
+            'message' => 'quorum threshold too high (words=2, thresh=3); replacing quorum operator with AND operator',
+            'code'    => '1000',
+        );
+
+        $this->assertSame($expected, $sphinxSearch->showWarnings());
+    }
+
+    /**
+     * @test
+     */
     public function shouldShowMeta()
     {
         $connection = new PDOConnection($_ENV['SPHINX_HOST'], $_ENV['SPHINX_PORT']);
